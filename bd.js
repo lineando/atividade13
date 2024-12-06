@@ -1,4 +1,5 @@
 import pkg from "pg";
+export { selectUsuarios, selectUsuario, insertUsuario };
 const { Pool } = pkg;
 
 
@@ -23,4 +24,11 @@ async function connect() {
     client.release();
     return res.rows;  
 }
-   export { selectUsuarios, selectUsuario };
+
+  async function insertUsuario(data) {
+    const client = await connect();
+    const query = "INSERT INTO usuario (nome,senha,email) VALUES ($1,$2,$3) ";
+    const usuario = [data.nome, data.senha, data.email];
+    await client.query(query, usuario);
+    client.release();
+  }
